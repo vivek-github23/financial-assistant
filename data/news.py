@@ -11,7 +11,7 @@ url = f"https://gnews.io/api/v4/top-headlines?category={category}&lang=en&countr
 def get_news():
     response = requests.get(url)
     data = json.loads(response.text)
-    # print(data)
+    print(data)
     return data
 
 if __name__ == "__main__":
