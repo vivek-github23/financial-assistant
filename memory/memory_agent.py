@@ -1,9 +1,7 @@
-from memory.retrieve_memory import retrieve_memory
-
+from memory.retrieve_memory import (retrieve_memory)
 
 def memory_agent(state):
     print("\n🧠 Memory Agent")
-    memories = retrieve_memory()
+    memories = retrieve_memory(state["question"])
     print(f"Retrieved {len(memories)} memories")
-
-    return {"memories": memories}
+    return {"memories":memories}

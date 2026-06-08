@@ -11,20 +11,20 @@ for event in workflow.stream({"question": question}):
         print(f"🤖 {node_name.upper()} AGENT")
         print("=" * 60)
         print(output)
-        # Merge node output into final state
+
         if isinstance(output, dict):
             final_state.update(output)
 
-print("\n✅ Workflow Completed")
+print("\nWorkflow Completed")
 
-# Save memory if analysis exists
-if "analysis" in final_state:
+if final_state.get("analysis"):
     save_memory(
         question=question,
-        analysis={
-            "analysis": final_state.get("analysis"),
-            "critique": final_state.get("critique")
-        }
+        analysis=final_state["analysis"]
     )
+    print("Memory Saved")
 else:
-    print("⚠️ No analysis found to save")
+    print("No analysis found to save")
+
+print("\nFinal State Keys:")
+print(list(final_state.keys()))

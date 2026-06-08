@@ -3,7 +3,14 @@ from agents.llm import llm
 def analyst(state):
     print("📊 Analyst Agent")
     news_articles = state.get("news",[])[:5]
-    memories = state.get("memories",[])
+    memory_context = ""
+    for memory in state.get("memories",[]):
+        memory_context += f"""
+            Question:
+            {memory['question']}
+            Analysis:
+            {memory['analysis']}
+        """
     news_text = "\n".join([
         f"""
         Title:
@@ -14,15 +21,15 @@ def analyst(state):
         for article in news_articles])
 
     prompt = f"""
-        Past Memories:
-        {memories}
-        Question:
+        Past Similar Analyses:
+        {memory_context}
+        Current Question:
         {state["question"]}
         News:
         {news_text}
         Stocks:
         {state["stocks"]}
-        Generate a financial analysis.
+        Generate analysis.
     """
 
     response = llm.invoke(prompt)

@@ -1,13 +1,24 @@
-import json
-import os
+from memory.embeddings import create_embedding
+from memory.qdrant_client import client, COLLECTION_NAME
 
-MEMORY_FILE = "memory/memory_store.json"
+def retrieve_memory(query, top_k=3):
 
-def retrieve_memory():
-    if not os.path.exists(MEMORY_FILE):
-        return []
+    embedding = create_embedding(query)
 
-    with open(MEMORY_FILE, "r") as f:
-        memories = json.load(f)
+    results = client.query_points(
+        collection_name=COLLECTION_NAME,
+        query=embedding,
+        limit=top_k
+    )
 
-    return memories[-5:]
+    memories = []
+
+    for point in results.points:
+
+        memories.append({
+            "question": point.payload.get("question"),
+            "analysis": point.payload.get("analysis"),
+            "score": point.score
+        })
+
+    return memories

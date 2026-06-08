@@ -1,4 +1,5 @@
-from typing import TypedDict, Optional
+from typing import TypedDict
+from typing import Optional
 
 class AgentState(TypedDict):
     question: str
