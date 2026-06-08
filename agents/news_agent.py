@@ -1,20 +1,16 @@
-from data.news import get_news
+from tools.news_tool import search_news
+
 
 def news_agent(state):
 
-    print("📰 News Agent")
+    query = state.get("news_query")
 
-    news_response = get_news()
+    print(f"\n📰 Searching: {query}")
 
-    articles = news_response.get(
-        "articles",
-        []
-    )
+    news = search_news.invoke({"query": query})
 
-    print(
-        f"Retrieved {len(articles)} articles"
-    )
+    articles = news.get("articles",[])
 
-    return {
-        "news": articles
-    }
+    print(f"Retrieved {len(articles)} articles")
+
+    return {"news": articles}

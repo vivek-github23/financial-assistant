@@ -1,6 +1,6 @@
 from graph.workflow import workflow
 
-question = "How safe is it to invest in Intel right now?"
+question = "How safe is it to invest in TCS right now?"
 
 for event in workflow.stream(
     {
