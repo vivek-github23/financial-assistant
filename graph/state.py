@@ -1,13 +1,24 @@
-from typing import TypedDict
-from typing import Optional
+from typing import TypedDict, Optional
 
-class AgentState(TypedDict):
+class AgentState(TypedDict, total=False):
     question: str
-    plan: Optional[str]
-    news_query: Optional[str]
-    required_agents: Optional[list]
-    memories: Optional[list]
-    news: Optional[list]
-    stocks: Optional[dict]
-    analysis: Optional[str]
-    critique: Optional[str]
+    plan: str
+    news_query: str
+    required_agents: list
+
+    memories: list
+    news: list
+    news_sentiment: list
+    companies: list
+    countries: list
+
+    stocks: dict
+    macro_data: dict
+    market_sentiment: str
+
+    evidence: dict
+
+    analysis: dict
+    critique: str
+    score: float
+    iterations: int

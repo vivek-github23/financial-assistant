@@ -1,24 +1,9 @@
-def route_news(state):
+from langgraph.graph import END
 
-    agents = state.get(
-        "required_agents",
-        []
-    )
-
-    if "news" in agents:
-        return "news"
-
-    return "analyst"
-
-
-def route_stocks(state):
-
-    agents = state.get(
-        "required_agents",
-        []
-    )
-
-    if "stocks" in agents:
-        return "stocks"
-
-    return "analyst"
+def reflection_router(state):
+    score = state.get("score", 0)
+    iterations = state.get("iterations", 0)
+    print(f"\nRouter -> score={score}, iterations={iterations}")
+    if score >= 0.8 or iterations >= 1:
+        return END
+    return "revision"
