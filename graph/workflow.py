@@ -12,6 +12,7 @@ from agents.critic import critic
 from agents.revision import revision
 from agents.evidence_collector import evidence_collector
 from agents.sentiment_agent import sentiment_agent
+from agents.graph_memory_agent import graph_memory_agent
 
 from memory.memory_agent import memory_agent
 
@@ -20,6 +21,7 @@ from graph.router import reflection_router
 graph = StateGraph(AgentState)
 
 graph.add_node("planner", planner)
+graph.add_node("graph_memory",graph_memory_agent)
 graph.add_node("supervisor", supervisor)
 graph.add_node("memory", memory_agent)
 graph.add_node("news", news_agent)
@@ -41,7 +43,8 @@ graph.add_edge("stocks", "macro")
 graph.add_edge("macro", "sentiment")
 graph.add_edge("sentiment", "evidence_collector")
 graph.add_edge("evidence_collector", "analyst")
-graph.add_edge("analyst", "critic")
+graph.add_edge("analyst","graph_memory")
+graph.add_edge("graph_memory","critic")
 graph.add_conditional_edges("critic",reflection_router,{"revision": "revision",END: END})
 graph.add_edge("revision", "analyst")
 
