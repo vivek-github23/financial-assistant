@@ -6,11 +6,5 @@ driver = GraphDatabase.driver(
 )
 
 def run_query(query, params=None):
-
     with driver.session() as session:
-        return list(
-            session.run(
-                query,
-                params or {}
-            )
-        )
+        return list(session.run(query,params or {}))

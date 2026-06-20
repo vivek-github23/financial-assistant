@@ -1,12 +1,8 @@
 import yfinance as yf
+from utils.logger import logger
 
 def get_stock_data(ticker):
-    hist = yf.download(
-        ticker,
-        period="1mo",
-        progress=False,
-        auto_adjust=True
-    )
+    hist = yf.download(ticker,period="1mo",progress=False,auto_adjust=True)
 
     if hist.empty:
         return {"error": "No data returned"}
@@ -21,10 +17,6 @@ def get_stock_data(ticker):
 
     return {
         "latest_close": latest_close,
-        "monthly_return": round(
-            ((latest_close - first_close) / first_close) * 100,
-            2
-        )
+        "monthly_return": round(((latest_close - first_close) / first_close) * 100,2)
     }
 
-# print(get_stock_data("INFY.NS"))

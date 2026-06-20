@@ -12,7 +12,8 @@ from agents.critic import critic
 from agents.revision import revision
 from agents.evidence_collector import evidence_collector
 from agents.sentiment_agent import sentiment_agent
-from agents.graph_memory_agent import graph_memory_agent
+from agents.graph_retriever import graph_retriever
+from agents.graph_writer import graph_writer
 
 from memory.memory_agent import memory_agent
 
@@ -21,7 +22,6 @@ from graph.router import reflection_router
 graph = StateGraph(AgentState)
 
 graph.add_node("planner", planner)
-graph.add_node("graph_memory",graph_memory_agent)
 graph.add_node("supervisor", supervisor)
 graph.add_node("memory", memory_agent)
 graph.add_node("news", news_agent)
@@ -32,6 +32,8 @@ graph.add_node("evidence_collector", evidence_collector)
 graph.add_node("analyst", analyst)
 graph.add_node("critic", critic)
 graph.add_node("revision", revision)
+graph.add_node("graph_retriever", graph_retriever)
+graph.add_node("graph_writer", graph_writer)
 
 graph.set_entry_point("planner")
 
@@ -41,10 +43,11 @@ graph.add_edge("memory", "news")
 graph.add_edge("news", "stocks")
 graph.add_edge("stocks", "macro")
 graph.add_edge("macro", "sentiment")
-graph.add_edge("sentiment", "evidence_collector")
+graph.add_edge("sentiment", "graph_retriever")
+graph.add_edge("graph_retriever", "evidence_collector")
 graph.add_edge("evidence_collector", "analyst")
-graph.add_edge("analyst","graph_memory")
-graph.add_edge("graph_memory","critic")
+graph.add_edge("analyst", "graph_writer")
+graph.add_edge("graph_writer", "critic")
 graph.add_conditional_edges("critic",reflection_router,{"revision": "revision",END: END})
 graph.add_edge("revision", "analyst")
 

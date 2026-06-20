@@ -1,7 +1,8 @@
 from agents.llm import llm
+from utils.logger import logger
 
 def revision(state):
-    print("\n✏️ Revision Agent")
+    logger.info("\n✏️ Revision Agent")
 
     prompt = f"""
         Improve the following analysis based on the critique.

@@ -1,8 +1,10 @@
 from agents.llm import llm
 import json
 
+from utils.logger import logger
+
 def critic(state):
-    print("\n🔍 Critic Agent")
+    logger.info("\n🔍 Critic Agent")
 
     prompt = f"""
         Evaluate the financial analysis.

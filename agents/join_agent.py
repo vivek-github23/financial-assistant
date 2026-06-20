@@ -1,3 +1,5 @@
+from utils.logger import logger
+
 def join_agent(state):
-    print("\n🔗 Join Agent")
+    logger.info("\n🔗 Join Agent")
     return {}

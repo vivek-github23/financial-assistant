@@ -1,5 +1,7 @@
+from utils.logger import logger
+
 def sentiment_agent(state):
-    print("😊 Sentiment Agent")
+    logger.info("😊 Sentiment Agent")
     data = state.get("news_sentiment", [])
     scores = [x['polarity'] for x in data]
     if not scores:

@@ -1,15 +1,15 @@
 from tools.news_tool import search_news
 from tools.sentiment_tool import analyze_sentiment
-
+from utils.logger import logger
 
 def news_agent(state):
     if "news" not in state.get("required_agents", []):
-        print("⏭️ Skipping News Agent")
+        logger.info("⏭️ Skipping News Agent")
         return {}
 
     query = state["news_query"]
 
-    print(f"📰 Searching {query}")
+    logger.info(f"📰 Searching {query}")
 
     news = search_news.invoke({"query": query})
 

@@ -1,11 +1,12 @@
 from memory.retrieve_memory import (retrieve_memory)
+from utils.logger import logger
 
 def memory_agent(state):
-    print("\n🧠 Memory Agent")
+    logger.info("\n🧠 Memory Agent")
     if "memory" not in state.get("required_agents", []):
-        print("⏭️ Skipping Memory Agent")
+        logger.info("⏭️ Skipping Memory Agent")
         return {}
-    print("🧠 Memory Agent")
+    logger.info("🧠 Memory Agent")
     memories = retrieve_memory(state["question"])
-    print(f"Retrieved {len(memories)} memories")
+    logger.info(f"Retrieved {len(memories)} memories")
     return {"memories":memories}

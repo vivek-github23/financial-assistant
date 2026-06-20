@@ -2,19 +2,13 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import Distance
 from qdrant_client.models import VectorParams
 
-client = QdrantClient(
-    path="./qdrant_data"
-)
+client = QdrantClient(path="./qdrant_data")
 
 COLLECTION_NAME = "agent_memory"
 
-collections = [
-    c.name
-    for c in client.get_collections().collections
-]
+collections = [c.name for c in client.get_collections().collections]
 
 if COLLECTION_NAME not in collections:
-
     client.create_collection(
         collection_name=COLLECTION_NAME,
         vectors_config=VectorParams(

@@ -3,9 +3,10 @@ import re
 
 from agents.llm import llm
 
+from utils.logger import logger
 
 def analyst(state):
-    print("📊 Analyst Agent")
+    logger.info("📊 Analyst Agent")
     evidence = state.get("evidence", {})
     prompt = f"""
     You are a senior financial analyst.

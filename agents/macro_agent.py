@@ -1,4 +1,5 @@
 from data.macro import get_macro_data
+from utils.logger import logger
 
 COUNTRY_CODES = {
     "india": "IND",
@@ -17,9 +18,9 @@ COUNTRY_CODES = {
 
 def macro_agent(state):
     if "macro" not in state.get("required_agents", []):
-        print("⏭️ Skipping Macro Agent")
+        logger.info("⏭️ Skipping Macro Agent")
         return {}
-    print("🌍 Macro Agent")
+    logger.info("🌍 Macro Agent")
     countries = state.get("countries", [])
     macro_results = {}
     for country in countries:
@@ -27,4 +28,5 @@ def macro_agent(state):
         if not country_code:
             continue
         macro_results[country] = get_macro_data(country_code)
+    logger.info("🌍 Macro Agent Results")
     return {"macro_data": macro_results}

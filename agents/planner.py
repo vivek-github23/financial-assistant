@@ -3,10 +3,10 @@ import re
 
 from sympy import content
 from agents.llm import llm
-
+from utils.logger import logger
 
 def planner(state):
-    print("\n🧠 Planner Agent")
+    logger.info("\n🧠 Planner Agent")
     prompt = f"""
         You are a financial planning agent.
 
@@ -21,7 +21,7 @@ def planner(state):
         4. Companies
         5. Countries
 
-        The News Search Query must be contanining relevant keywords to fetch useful news articles for the analysis without any special characters.
+        The News Search Query must be contanining relevant keywords to fetch useful news articles for the analysis without any special characters. The News Search Query should not have values like "stock price" or anything related to stock price.  
 
         Available Agents:
 
@@ -47,13 +47,12 @@ def planner(state):
     response = llm.invoke(prompt)
 
     content = response.content
-    print("LLM Response", content)
+    logger.info("LLM Response", content)
     match = re.search(r'\{.*?\}', content, re.DOTALL)
     json_text="{}"
     if match:
         json_text = match.group(0)
-    print("Result",json_text)  
-    print("JSON text end")  
+    logger.info("Result",json_text)  
     
     try:
         result = json.loads(json_text)
@@ -66,9 +65,9 @@ def planner(state):
         }
 
     except Exception as e:
-        print(f"Error: {type(e).__name__}")
-        print(f"Details: {e}")
-        print(f"JSON Text: {json_text}")
+        logger.error(f"Error: {type(e).__name__}")
+        logger.error(f"Details: {e}")
+        logger.error(f"JSON Text: {json_text}")
         return {
             "plan": state["question"],
             "news_query": state["question"].replace("?",""),
