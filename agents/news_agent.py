@@ -12,7 +12,7 @@ def news_agent(state):
     logger.info(f"📰 Searching {query}")
 
     news = search_news.invoke({"query": query})
-
+    
     articles = news.get("articles",[])
 
     sentiment_scores = []

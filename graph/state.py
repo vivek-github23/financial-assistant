@@ -17,6 +17,7 @@ class AgentState(TypedDict, total=False):
     market_sentiment: str
 
     evidence: dict
+    metrics: dict
     graph_context: list
 
     analysis: dict

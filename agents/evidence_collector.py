@@ -1,18 +1,42 @@
+from utils.logger import logger
+
 def evidence_collector(state):
+    logger.info("📂 Evidence Collector")
 
-    print("📂 Evidence Collector")
+    evidence = []
 
-    evidence = {
-        "question": state["question"],
-        "companies": state.get("companies", []),
-        "countries": state.get("countries", []),
-        "memories": state.get("memories", []),
-        "news": state.get("news", []),
-        "news_sentiment": state.get("news_sentiment", []),
-        "stocks": state.get("stocks", {}),
-        "macro": state.get("macro_data", {}),
-        "market_sentiment": state.get("market_sentiment"),
-        "graph_context": state.get("graph_context", [])
+    for article in state.get("news", [])[:5]:
+        evidence.append({
+            "type": "news",
+            "source": article.get("source", {}).get("name"),
+            "title": article.get("title"),
+            "description": article.get("description"),
+            "source":article.get("url")
+        })
+
+    for company, data in state.get("stocks", {}).items():
+        evidence.append({
+            "type": "stock",
+            "company": company,
+            "data": data
+        })
+
+    for metric, data in state.get("macro_data", {}).items():
+        evidence.append({
+            "type": "macro",
+            "metric": metric,
+            "data": data
+        })
+
+    metrics = {
+        "news_articles": len(state.get("news", [])),
+        "companies_found": len(state.get("companies", [])),
+        "countries_found": len(state.get("countries", [])),
+        "stocks_analyzed": len(state.get("stocks", {})),
+        "memories_retrieved": len(state.get("memories", []))
     }
 
-    return {"evidence": evidence}
+    return {
+        "evidence": evidence,
+        "metrics": metrics
+    }

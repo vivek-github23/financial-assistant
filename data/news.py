@@ -2,10 +2,11 @@ import requests
 from urllib.parse import quote
 from utils.logger import logger
 
-API_KEY = "29b7ca96572683201aa0e76b402535fb"
-
+# API_KEY = "29b7ca96572683201aa0e76b402535fb"
+API_KEY = "42e5f2f8ee8e475681925d8c2f328f03"
 def get_news(query,max_articles=10):
-    url = f"https://gnews.io/api/v4/search?q={quote(query)}&lang=en&country=in&max={max_articles}&apikey={API_KEY}"
+    # url = f"https://gnews.io/api/v4/search?q={quote(query)}&lang=en&country=in&max={max_articles}&apikey={API_KEY}"
+    url = f"https://newsapi.org/v2/everything?q={quote(query)}&apiKey=42e5f2f8ee8e475681925d8c2f328f03"
     logger.info(url)
     response = requests.get(url)
     logger.info(response.status_code)

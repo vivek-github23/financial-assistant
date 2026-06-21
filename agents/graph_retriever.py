@@ -1,41 +1,47 @@
-from graph_db.neo4j_client import run_query
+from graph_db.query_graph import query_graph
 from utils.logger import logger
 
 def graph_retriever(state):
-
-    logger.info("🕸️ Graph Retriever")
+    logger.info("🔍 Graph Retriever")
 
     companies = state.get("companies", [])
     countries = state.get("countries", [])
 
     graph_context = []
 
+    # Retrieve company-related information
     for company in companies:
-
-        result = run_query(
+        result = query_graph(
             """
             MATCH (c:Company {name:$company})
-            OPTIONAL MATCH (c)-[r]->(n)
-            RETURN c.name as company,
-                   type(r) as relation,
-                   n.name as target
+            OPTIONAL MATCH (c)-[:MENTIONED_IN]->(n:News)
+            RETURN
+                c.name as company,
+                collect(
+                    {
+                        title:n.title,
+                        source:n.source,
+                        url:n.url
+                    }
+                ) as news
             """,
-            {"company": company}
-        )
+            {"company": company})
         graph_context.extend(result)
 
+    # Retrieve country-related information
     for country in countries:
-        result = run_query(
+        result = query_graph(
             """
-            MATCH (c:Country {name:$country})
-            OPTIONAL MATCH (c)-[r]->(n)
-            RETURN c.name as country,
-                   type(r) as relation,
-                   n.name as target
+            MATCH (ct:Country {name:$country})
+            OPTIONAL MATCH (company:Company)-[:OPERATES_IN]->(ct)
+            RETURN
+                ct.name AS country,
+                collect(DISTINCT company.name) AS companies
             """,
             {"country": country}
         )
-
         graph_context.extend(result)
+
+    logger.info(f"Retrieved {len(graph_context)} graph records")
 
     return {"graph_context": graph_context}
